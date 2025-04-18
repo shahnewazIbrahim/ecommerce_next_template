@@ -1,70 +1,40 @@
-import Footer from "@/components/ui/footer";
-import Header from "@/components/ui/header";
-import type { Metadata } from "next";
-import "./globals.css";
+import type React from "react"
+import "@/app/globals.css"
+import { Inter } from "next/font/google"
+import { ThemeProvider } from "@/components/theme-provider"
+import { CartProvider } from "@/context/cart-context"
+import Header from "@/components/ui/header"
+import Footer from "@/components/ui/footer"
+import { Toaster } from "@/components/toaster"
+import DebugCart from "./debug-cart"
 
-export const metadata: Metadata = {
-  title: "StyleShop",
-  description: "Your destination for trendy fashion and accessories.",
-  keywords: ["fashion", "clothing", "accessories", "style", "shop"],
-  authors: [{ name: "Your Name", url: "https://yourwebsite.com" }],
-  creator: "Your Name",
-  publisher: "Your Name",
-  openGraph: {
-    title: "StyleShop",
-    description: "Your destination for trendy fashion and accessories.",
-    url: "https://yourwebsite.com",
-    siteName: "StyleShop",
-    images: [
-      {
-        url: "https://yourwebsite.com/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "StyleShop - Your destination for trendy fashion and accessories.",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "StyleShop",
-    description: "Your destination for trendy fashion and accessories.",
-    images: ["https://yourwebsite.com/og-image.jpg"],
-    creator: "@yourtwitterhandle",
-  },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
-  manifest: "/site.webmanifest",
-  themeColor: "#ffffff",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-  },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
-  generator: "v0.dev",
-};
+const inter = Inter({ subsets: ["latin"] })
+
+export const metadata = {
+  title: "SimpleShop - Ecommerce Store",
+  description: "A simple ecommerce store built with Next.js",
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en">
-      <body>
-        <Header />
-        {children}
-        <Footer />
+    <html lang="en" className="light" style={{ colorScheme: 'light' }}>
+      <body className={inter.className}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <CartProvider>
+            <div className="min-h-screen bg-white flex flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <Toaster />
+            <DebugCart />
+          </CartProvider>
+        </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }
