@@ -8,10 +8,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useCart } from "@/context/cart-context"
 import { toast } from "@/components/ui/use-toast"
 import Image from "next/image"
+import { use } from "react"
 
 // Simple product data
 const products = {
-  1: {
+  "1": {
     id: 1,
     name: "Basic T-Shirt",
     price: 19.99,
@@ -22,7 +23,7 @@ const products = {
     category: "Clothing",
     image: "/placeholder.svg?height=400&width=300&text=Basic+T-Shirt",
   },
-  2: {
+  "2": {
     id: 2,
     name: "Denim Jeans",
     price: 49.99,
@@ -33,7 +34,7 @@ const products = {
     category: "Clothing",
     image: "/placeholder.svg?height=400&width=300&text=Denim+Jeans",
   },
-  3: {
+  "3": {
     id: 3,
     name: "Sneakers",
     price: 79.99,
@@ -44,7 +45,7 @@ const products = {
     category: "Footwear",
     image: "/placeholder.svg?height=400&width=300&text=Sneakers",
   },
-  4: {
+  "4": {
     id: 4,
     name: "Backpack",
     price: 39.99,
@@ -58,27 +59,17 @@ const products = {
 }
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-  const productId = Number.parseInt(params.id)
-  const product = products[productId as keyof typeof products]
+  // Fix: Use React.use() to unwrap params before accessing properties
+  const unwrappedParams = use(params)
+  const productId = unwrappedParams.id
+  const product = products[productId]
 
   const { addItem, getItemQuantity } = useCart()
-  const itemQuantityInCart = getItemQuantity(productId)
 
   const [quantity, setQuantity] = useState(1)
-  const [selectedSize, setSelectedSize] = useState(product?.sizes[0] || "")
-  const [selectedColor, setSelectedColor] = useState(product?.colors[0] || "")
+  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || "")
+  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0] || "")
   const [inWishlist, setInWishlist] = useState(false)
-
-  if (!product) {
-    return (
-      <div className="container px-4 py-10 mx-auto text-center">
-        <h1 className="text-3xl font-bold">Product not found</h1>
-        <Link href="/">
-          <Button className="mt-4">Back to Products</Button>
-        </Link>
-      </div>
-    )
-  }
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
@@ -103,6 +94,21 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       description: inWishlist ? "Removed from wishlist" : "Added to wishlist",
     })
   }
+
+  // Handle case where product is not found
+  if (!product) {
+    return (
+      <div className="container px-4 py-10 mx-auto text-center">
+        <h1 className="text-3xl font-bold">Product not found</h1>
+        <p className="mt-4 text-gray-500">The product you're looking for doesn't exist or has been removed.</p>
+        <Link href="/">
+          <Button className="mt-4">Back to Home</Button>
+        </Link>
+      </div>
+    )
+  }
+
+  const itemQuantityInCart = getItemQuantity(product.id)
 
   return (
     <div className="container px-4 py-10 mx-auto">
