@@ -1,46 +1,19 @@
-import { Button } from "@/components/ui/button"
-import ProductCard from "@/components/product-card"
-
-// Simple product data
-const featuredProducts = [
-  {
-    id: 1,
-    name: "Basic T-Shirt",
-    price: 19.99,
-    category: "Clothing",
-    image: "/placeholder.svg?height=400&width=300&text=T-Shirt",
-  },
-  {
-    id: 2,
-    name: "Denim Jeans",
-    price: 49.99,
-    category: "Clothing",
-    image: "/placeholder.svg?height=400&width=300&text=Jeans",
-  },
-  {
-    id: 3,
-    name: "Sneakers",
-    price: 79.99,
-    category: "Footwear",
-    image: "/placeholder.svg?height=400&width=300&text=Sneakers",
-  },
-  {
-    id: 4,
-    name: "Backpack",
-    price: 39.99,
-    category: "Accessories",
-    image: "/placeholder.svg?height=400&width=300&text=Backpack",
-  },
-]
+import ProductCard from "@/components/product-card";
+import { Button } from "@/components/ui/button";
+import { getFeaturedProducts } from "@/lib/products";
 
 export default function Home() {
+  const featuredProducts = getFeaturedProducts(4);
+
   return (
     <>
       {/* Hero Section */}
       <section className="py-12 bg-gray-100">
         <div className="container px-4 mx-auto text-center">
           <h1 className="text-4xl font-bold">Welcome to SimpleShop</h1>
-          <p className="mt-4 text-lg text-gray-600">Quality products at affordable prices</p>
+          <p className="mt-4 text-lg text-gray-600">
+            Quality products at affordable prices
+          </p>
           <Button className="mt-6">Shop Now</Button>
         </div>
       </section>
@@ -57,5 +30,5 @@ export default function Home() {
         </div>
       </section>
     </>
-  )
+  );
 }

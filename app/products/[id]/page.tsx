@@ -9,66 +9,34 @@ import { useCart } from "@/context/cart-context"
 import { toast } from "@/components/ui/use-toast"
 import Image from "next/image"
 import { use } from "react"
-
-// Simple product data
-const products = {
-  "1": {
-    id: 1,
-    name: "Basic T-Shirt",
-    price: 19.99,
-    description: "A comfortable and stylish basic t-shirt made from 100% cotton.",
-    features: ["100% cotton", "Regular fit", "Machine washable", "Available in multiple colors"],
-    sizes: ["XS", "S", "M", "L", "XL"],
-    colors: ["Black", "White", "Navy", "Gray"],
-    category: "Clothing",
-    image: "/placeholder.svg?height=400&width=300&text=Basic+T-Shirt",
-  },
-  "2": {
-    id: 2,
-    name: "Denim Jeans",
-    price: 49.99,
-    description: "Classic denim jeans with a comfortable stretch fit.",
-    features: ["98% cotton, 2% elastane", "Regular fit", "Machine washable", "Five pocket design"],
-    sizes: ["28", "30", "32", "34", "36"],
-    colors: ["Blue", "Black", "Gray"],
-    category: "Clothing",
-    image: "/placeholder.svg?height=400&width=300&text=Denim+Jeans",
-  },
-  "3": {
-    id: 3,
-    name: "Sneakers",
-    price: 79.99,
-    description: "Comfortable everyday sneakers with cushioned insoles.",
-    features: ["Synthetic upper", "Rubber outsole", "Cushioned insole", "Lace-up closure"],
-    sizes: ["7", "8", "9", "10", "11", "12"],
-    colors: ["White", "Black", "Gray", "Red"],
-    category: "Footwear",
-    image: "/placeholder.svg?height=400&width=300&text=Sneakers",
-  },
-  "4": {
-    id: 4,
-    name: "Backpack",
-    price: 39.99,
-    description: "Durable backpack with multiple compartments for everyday use.",
-    features: ["Water-resistant material", "Padded laptop sleeve", "Multiple pockets", "Adjustable straps"],
-    sizes: ["One Size"],
-    colors: ["Black", "Navy", "Gray", "Green"],
-    category: "Accessories",
-    image: "/placeholder.svg?height=400&width=300&text=Backpack",
-  },
-}
+import { getProductById } from "@/lib/products"
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-  // Fix: Use React.use() to unwrap params before accessing properties
+  // Unwrap params and get product
   const unwrappedParams = use(params)
   const productId = unwrappedParams.id
-  const product = products[productId]
+  const product = getProductById(productId)
 
   const { addItem, getItemQuantity } = useCart()
 
+  // Handle case where product is not found
+  if (!product) {
+    return (
+      <div className="container px-4 py-10 mx-auto text-center">
+        <h1 className="text-3xl font-bold">Product not found</h1>
+        <p className="mt-4 text-gray-500">The product you're looking for doesn't exist or has been removed.</p>
+        <Link href="/">
+          <Button className="mt-4">Back to Home</Button>
+        </Link>
+      </div>
+    )
+  }
+
+  const itemQuantityInCart = getItemQuantity(product.id)
+
   const [quantity, setQuantity] = useState(1)
-  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] || "")
-  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0] || "")
+  const [selectedSize, setSelectedSize] = useState(product.sizes[0])
+  const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [inWishlist, setInWishlist] = useState(false)
 
   const decreaseQuantity = () => {
@@ -94,21 +62,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       description: inWishlist ? "Removed from wishlist" : "Added to wishlist",
     })
   }
-
-  // Handle case where product is not found
-  if (!product) {
-    return (
-      <div className="container px-4 py-10 mx-auto text-center">
-        <h1 className="text-3xl font-bold">Product not found</h1>
-        <p className="mt-4 text-gray-500">The product you're looking for doesn't exist or has been removed.</p>
-        <Link href="/">
-          <Button className="mt-4">Back to Home</Button>
-        </Link>
-      </div>
-    )
-  }
-
-  const itemQuantityInCart = getItemQuantity(product.id)
 
   return (
     <div className="container px-4 py-10 mx-auto">
