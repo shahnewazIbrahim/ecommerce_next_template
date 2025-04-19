@@ -9,7 +9,7 @@ export default function Header() {
   const { totalItems } = useCart()
 
   return (
-    <header className="border-b">
+    <header className="border-b sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-sm">
       <div className="container flex items-center justify-between h-16 px-4 mx-auto">
         <Link href="/" className="text-xl font-bold">
           SimpleShop
