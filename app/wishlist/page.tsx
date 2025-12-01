@@ -1,24 +1,21 @@
-import Image from "next/image"
 import Link from "next/link"
-import { ShoppingCart, Trash2 } from "lucide-react"
+import { ShoppingBag, Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 
-// Mock wishlist data
+// Simple wishlist data
 const wishlistItems = [
   {
     id: 2,
     name: "Denim Jeans",
-    price: 59.99,
-    image: "/placeholder.svg?height=300&width=300",
+    price: 49.99,
     category: "Clothing",
   },
   {
-    id: 5,
-    name: "Sunglasses",
-    price: 24.99,
-    image: "/placeholder.svg?height=300&width=300",
+    id: 4,
+    name: "Backpack",
+    price: 39.99,
     category: "Accessories",
   },
 ]
@@ -31,20 +28,14 @@ export default function WishlistPage() {
       {wishlistItems.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 mt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {wishlistItems.map((item) => (
-            <Card key={item.id} className="overflow-hidden">
-              <div className="relative">
-                <Link href={`/products/${item.id}`}>
-                  <Image
-                    src={item.image || "/placeholder.svg"}
-                    alt={item.name}
-                    width={300}
-                    height={300}
-                    className="object-cover w-full h-[250px]"
-                  />
-                </Link>
+            <Card key={item.id}>
+              <div className="pt-4 flex items-center justify-center">
+                <div className="w-32 h-32 bg-gray-200 rounded-md flex items-center justify-center">
+                  <span className="text-gray-500">{item.name[0]}</span>
+                </div>
               </div>
               <CardContent className="p-4">
-                <div className="text-sm text-muted-foreground">{item.category}</div>
+                <div className="text-sm text-gray-500">{item.category}</div>
                 <Link href={`/products/${item.id}`} className="block mt-1 text-lg font-medium hover:underline">
                   {item.name}
                 </Link>
@@ -52,7 +43,7 @@ export default function WishlistPage() {
               </CardContent>
               <CardFooter className="flex gap-2 p-4 pt-0">
                 <Button className="flex-1">
-                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  <ShoppingBag className="w-4 h-4 mr-2" />
                   Add to Cart
                 </Button>
                 <Button variant="outline" size="icon" className="text-red-500">

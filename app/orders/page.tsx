@@ -2,37 +2,27 @@ import Link from "next/link"
 import { ChevronRight, Package } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-// Mock order history data
+// Simple order history data
 const orders = [
   {
-    id: "ORD-2023-1234",
+    id: "ORD-1234",
     date: "April 12, 2023",
-    total: 119.97,
+    total: 89.97,
     status: "Delivered",
     items: [
-      { name: "Casual T-Shirt", quantity: 2 },
+      { name: "Basic T-Shirt", quantity: 2 },
       { name: "Denim Jeans", quantity: 1 },
     ],
   },
   {
-    id: "ORD-2023-0987",
+    id: "ORD-0987",
     date: "March 28, 2023",
-    total: 89.99,
+    total: 79.99,
     status: "Delivered",
-    items: [{ name: "Leather Sneakers", quantity: 1 }],
-  },
-  {
-    id: "ORD-2023-5678",
-    date: "February 15, 2023",
-    total: 74.98,
-    status: "Delivered",
-    items: [
-      { name: "Sunglasses", quantity: 1 },
-      { name: "Crossbody Bag", quantity: 1 },
-    ],
+    items: [{ name: "Sneakers", quantity: 1 }],
   },
 ]
 
@@ -48,19 +38,19 @@ export default function OrdersPage() {
               <CardHeader className="flex flex-row items-start justify-between">
                 <div>
                   <CardTitle className="text-lg">{order.id}</CardTitle>
-                  <CardDescription>{order.date}</CardDescription>
+                  <p className="text-sm text-gray-500">{order.date}</p>
                 </div>
-                <Badge variant={order.status === "Delivered" ? "default" : "outline"}>{order.status}</Badge>
+                <Badge>{order.status}</Badge>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   {order.items.map((item, index) => (
                     <div key={index} className="flex justify-between">
                       <div className="flex items-center">
-                        <Package className="w-4 h-4 mr-2 text-muted-foreground" />
+                        <Package className="w-4 h-4 mr-2 text-gray-500" />
                         <span>{item.name}</span>
                       </div>
-                      <span className="text-muted-foreground">Qty: {item.quantity}</span>
+                      <span className="text-gray-500">Qty: {item.quantity}</span>
                     </div>
                   ))}
                   <div className="pt-4 mt-4 border-t">

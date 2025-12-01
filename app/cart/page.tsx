@@ -1,41 +1,35 @@
-"use client";
+"use client"
 
-import { Minus, Plus, Trash2 } from "lucide-react";
-import Link from "next/link";
+import Link from "next/link"
+import { Minus, Plus, Trash2 } from "lucide-react"
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { toast } from "@/components/ui/use-toast";
-import { useCart } from "@/context/cart-context";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import { useCart } from "@/context/cart-context"
+import { toast } from "@/components/ui/use-toast"
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, subtotal } = useCart();
-  const shipping = items.length > 0 ? 4.99 : 0;
-  const total = subtotal + shipping;
+  const { items, updateQuantity, removeItem, subtotal } = useCart()
+  const shipping = items.length > 0 ? 4.99 : 0
+  const total = subtotal + shipping
 
   const handleUpdateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) {
-      return;
+      return
     }
-    updateQuantity(id, newQuantity);
+    updateQuantity(id, newQuantity)
     toast({
       description: "Cart updated",
-    });
-  };
+    })
+  }
 
   const handleRemoveItem = (id: number, name: string) => {
-    removeItem(id);
+    removeItem(id)
     toast({
       description: `${name} removed from cart`,
-    });
-  };
+    })
+  }
 
   return (
     <div className="container px-4 py-10 mx-auto">
@@ -45,31 +39,22 @@ export default function CartPage() {
           {items.length > 0 ? (
             <div className="space-y-4">
               {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center p-4 border rounded-lg"
-                >
+                <div key={item.id} className="flex items-center p-4 border rounded-lg">
                   <div className="flex-shrink-0">
                     <div className="w-[100px] h-[100px] bg-gray-200 rounded-md flex items-center justify-center">
-                      <span className="text-gray-500 text-2xl">
-                        {item.name[0]}
-                      </span>
+                      <span className="text-gray-500 text-2xl">{item.name[0]}</span>
                     </div>
                   </div>
                   <div className="flex-1 ml-4">
                     <h3 className="font-medium">{item.name}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Unit Price: ${item.price.toFixed(2)}
-                    </p>
+                    <p className="mt-1 text-sm text-muted-foreground">Unit Price: ${item.price.toFixed(2)}</p>
                   </div>
                   <div className="flex items-center ml-4">
                     <Button
                       variant="outline"
                       size="icon"
                       className="rounded-full"
-                      onClick={() =>
-                        handleUpdateQuantity(item.id, item.quantity - 1)
-                      }
+                      onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
                     >
                       <Minus className="w-4 h-4" />
                       <span className="sr-only">Decrease quantity</span>
@@ -79,17 +64,13 @@ export default function CartPage() {
                       variant="outline"
                       size="icon"
                       className="rounded-full"
-                      onClick={() =>
-                        handleUpdateQuantity(item.id, item.quantity + 1)
-                      }
+                      onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
                     >
                       <Plus className="w-4 h-4" />
                       <span className="sr-only">Increase quantity</span>
                     </Button>
                   </div>
-                  <div className="ml-4 font-medium">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </div>
+                  <div className="ml-4 font-medium">${(item.price * item.quantity).toFixed(2)}</div>
                   <Button
                     variant="ghost"
                     size="icon"
@@ -140,5 +121,5 @@ export default function CartPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
