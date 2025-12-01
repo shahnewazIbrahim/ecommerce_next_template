@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { CartProvider } from "@/context/cart-context"
 import Header from "@/components/header"
 import { Toaster } from "@/components/toaster"
+import RouteLoader from "@/components/route-loader"
 import DebugCart from "./debug-cart"
 import Footer from "@/components/footer"
 import ScrollToTop from "@/components/scroll-to-top"
@@ -27,6 +28,7 @@ export default function RootLayout({
       {/* Add suppressHydrationWarning to the body element */}
       <body className={inter.className} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <RouteLoader />
           <CartProvider>
             <ScrollToTop />
             <div className="min-h-screen bg-white flex flex-col">
